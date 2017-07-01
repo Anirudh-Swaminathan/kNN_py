@@ -33,11 +33,13 @@ def generate_data(num_classes, num_samps):
         train_X[i*num_samps:(i+1)*num_samps, :] = np.random.uniform(
                 low=start_val, high=end_val, size=(num_samps, 2))
         train_y[i*num_samps:(i+1)*num_samps] = np.array(
-                [chr(ord('A') + i) for _ in range(num_samps)])
+                #[chr(ord('A') + i) for _ in range(num_samps)])
+                [i for _ in range(num_samps)])
         test_X[i*te_samps:(i+1)*te_samps, :] = np.random.uniform(
                 low=start_val, high=end_val, size=(te_samps, 2))
         test_y[i*te_samps:(i+1)*te_samps] = np.array(
-                [chr(ord('A') + i) for _ in range(te_samps)])
+                #[chr(ord('A') + i) for _ in range(te_samps)])
+                [i for _ in range(te_samps)])
     # print train_X.shape, test_X.shape, train_y.shape, test_y.shape
     train_data = np.column_stack((train_X, train_y))
     test_data = np.column_stack((test_X, test_y))
@@ -47,20 +49,28 @@ def generate_data(num_classes, num_samps):
         rand_X = np.random.uniform(
                 low=0.0, high=(num_classes-1)*range_val, size=(ran_samps, 2))
         rand_y = np.array(
-                [chr(ord('A') + np.random.randint(low=0, high=num_classes))
-                for _ in range(ran_samps)])
+                #[chr(ord('A') + np.random.randint(low=0, high=num_classes))
+                [np.random.randint(low=0, high=num_classes) for _ in range(ran_samps)])
         rand_data = np.column_stack((rand_X, rand_y))
         train_data = np.row_stack(tup=(train_data, rand_data))
-    np.savetxt(fname='train.csv', X=train_data, delimiter=',')
-    np.savetxt(fname='test.csv', X=test_data, delimiter=',')
-    # print train_data
-    # print test_data
+    # print train_X, train_X.shape, type(train_X)
+    # np.savetxt('X.txt', train_X, delimiter=',', fmt='%1.8f, %1.8f, %d')
+    # print train_data, train_data.shape, type(train_data)
+    # print test_data, test_data.shape, type(test_data)
+    np.savetxt(fname='train.txt', X=train_data, delimiter=',', fmt='%1.8f, %1.8f, %d')
+    np.savetxt(fname='test.txt', X=test_data, delimiter=',', fmt='%1.8f, %1.8f, %d')
 
 def main():
-    num_classes = int(raw_input("Enter the number of classes to generate: "))
+    try:
+        num_classes = int(raw_input("Enter the number of classes to generate: "))
+    except Exception as e:
+        num_classes = 3
     if num_classes < 2 or num_classes > 10:
         num_classes = 3
-    num_samps = int(raw_input("Enter the number of samples in each classes: "))
+    try:
+        num_samps = int(raw_input("Enter the number of samples in each classes: "))
+    except Exception as e:
+        num_samps = 50
     if num_samps < 25 or num_samps > 750:
         num_samps = 50
     generate_data(num_classes, num_samps)
