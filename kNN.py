@@ -4,6 +4,7 @@
 import sys
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 def loadData(fname='train.txt'):
     """ Function to load the randomly generated data
@@ -112,6 +113,19 @@ def main():
         k = num_classes+1
     if not k%2:
         k+=1
+
+    # Plot the data
+    plt.figure(2, figsize=(8, 6))
+    plt.clf()
+    plt.scatter(x=train_X[:, 0], y=train_X[:, 1], c=train_y, cmap=plt.cm.Paired)
+    plt.xlabel("X points")
+    plt.ylabel("Y points")
+    x_min, x_max = train_X[:, 0].min() - .5, train_X[:, 0].max() + .5
+    y_min, y_max = train_X[:, 1].min() - .5, train_X[:, 1].max() + .5
+    plt.xlim(x_min, x_max)
+    plt.ylim(y_min, y_max)
+    plt.show()
+
     predictions = predict(X_test=test_X, X_train=train_X, y_train=train_y, k=k)
     acc = accuracy(y=test_y, y_pred=predictions)
     print "For k = %d, the testing accuracy is %.5f%%" % (k, acc*100.0)
