@@ -124,6 +124,7 @@ def main():
     y_min, y_max = train_X[:, 1].min() - .5, train_X[:, 1].max() + .5
     plt.xlim(x_min, x_max)
     plt.ylim(y_min, y_max)
+    plt.savefig('data.png', bbox_inches='tight')
     plt.show()
 
     predictions = predict(X_test=test_X, X_train=train_X, y_train=train_y, k=k)
